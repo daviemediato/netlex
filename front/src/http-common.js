@@ -6,6 +6,7 @@ export default axios.create({
     baseURL: BASEURL,
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer jwtsecretpassword'
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        'Access-Control-Allow-Origin': '*'
     }
 });

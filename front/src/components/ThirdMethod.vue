@@ -20,22 +20,45 @@
 
       <v-btn id="third-button" type="submit">Verificar</v-btn>
     </form>
+
+    <p
+      class="result-method-3"
+      v-for="(wordFrequency, wordName) in wordsDict"
+      :key="wordName.id"
+    >
+      {{ wordName }} - <b>{{ wordFrequency }}</b> ocorrências no texto.
+    </p>
   </div>
 </template>
 
 <script>
+import Http from "../http-common";
+
 export default {
   name: "ThirdMethod",
   data() {
     return {
-      countSelected: 1,
-      minWordLenSelected: 1,
+      countSelected: 3,
+      minWordLenSelected: 3,
       items: [...Array(12).keys()].map((x) => x + 1),
+      wordsDict: {},
     };
   },
   methods: {
     verify() {
-      console.log("verificado");
+      const url = "/documents/top-words";
+      const body = {
+        count: this.countSelected,
+        minWordLength: this.minWordLenSelected,
+      };
+
+      Http.post(url, body)
+        .then((response) => {
+          this.wordsDict = response.data;
+        })
+        .catch(() => {
+          throw new Error("Erro ao buscar as frases");
+        });
     },
   },
 };
@@ -59,5 +82,16 @@ export default {
   line-height: 23px;
   height: 45px;
   color: #ffffff;
+}
+
+.result-method-3 {
+  height: 23px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 23px;
+  color: #000000;
+  margin: 18px 175px 24px 88px;
 }
 </style>

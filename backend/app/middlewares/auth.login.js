@@ -10,13 +10,13 @@ const checkLogin = async (req, res, next) => {
             where: { email: payload.email },
         });
 
-        if(!user) res.status(401).send({error: 'Unauthorized'});
+        if (!user) res.status(401).send({ error: 'Unauthorized' });
 
         req.token = token;
         req.user = user;
         next();
-    } catch(exception) {
-        res.status(401).send({error: 'Unauthorized'})
+    } catch (exception) {
+        res.status(401).send({ error: 'Unauthorized' })
     }
 }
 

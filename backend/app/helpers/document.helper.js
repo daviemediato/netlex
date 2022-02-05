@@ -1,21 +1,23 @@
 module.exports = {
     wordFrequency: function (doc, word) {
-        const searchResult = doc.match(new RegExp(word, 'gi'));
+        const content = doc.content;
+        const searchResult = content.toString().match(new RegExp(word, 'gi'));
         const numberOfOcurrences = searchResult ? searchResult.length : 0;
 
         return numberOfOcurrences;
     },
 
     wordSentences: function (doc, word) {
-        const docLength = doc.length;
+        const content = doc.content;
+        const contentLength = content.length;
         const stopChars = ['.', ':', ';', '\n'];
         let phrase = '';
         let arrayOfPhrases = [];
 
-        for (let i = 0; i < docLength; i++) {
-            phrase += doc[i];
+        for (let i = 0; i < contentLength; i++) {
+            phrase += content[i];
 
-            if (stopChars.includes(doc[i])) {
+            if (stopChars.includes(content[i])) {
                 if (phrase.toLowerCase().includes(word.toLowerCase())) {
                     const indexOfFirstCapitalLetter = phrase.search(/[A-Z]/);
                     const finalPhraseResult = phrase.substring(indexOfFirstCapitalLetter,);
@@ -31,7 +33,8 @@ module.exports = {
     },
 
     topWords: function (doc, count, minWordLength) {
-        const allDocWords = this.stringToWordsArray(doc);
+        const content = doc.content;
+        const allDocWords = this.stringToWordsArray(content);
         const allDocWorsLowerCase = allDocWords.map((word) => { return word.toLowerCase(); });
         const filteredWords = allDocWorsLowerCase.filter((word) => word.length >= minWordLength);
         const maxIterations = count;
@@ -54,10 +57,8 @@ module.exports = {
             delete wordsFrequency[maxKey];
         }
 
-        const wordsNames = Object.keys(wordsFrequencyOrdered);
-        const wordsNamesFreq = Object.values(wordsFrequencyOrdered);
-
-        return wordsNames;
+        // será retornado um dicionário já ordenado com chave/quantidade
+        return wordsFrequencyOrdered;
     },
 
     stringToWordsArray: function (text) {

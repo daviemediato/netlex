@@ -16,20 +16,43 @@
 
       <v-btn id="first-button" type="submit">Verificar</v-btn>
     </form>
+
+    <p id="result" v-show="isResultVisible">
+      A palavra <b>{{ wordResult }}</b> foi encontrada em
+      <b>{{ numberOccurrences }}</b> vezes no texto.
+    </p>
   </div>
 </template>
 
 <script>
+import Http from "../http-common";
+
 export default {
   name: "FirstMethod",
   data() {
     return {
       word: "",
+      numberOccurrences: 0,
+      wordResult: "",
+      isResultVisible: false,
     };
   },
   methods: {
     verify() {
-      console.log("verificado");
+      const url = "/documents/word-frequency";
+      const body = {
+        word: this.word,
+      };
+
+      Http.post(url, body)
+        .then((response) => {
+          this.numberOccurrences = response.data;
+          this.wordResult = this.word;
+          this.isResultVisible = true;
+        })
+        .catch(() => {
+          throw new Error("Erro ao buscar a frequência da palavra.");
+        });
     },
   },
 };
@@ -53,5 +76,16 @@ export default {
   line-height: 23px;
   height: 45px;
   color: #ffffff;
+}
+
+#result {
+  height: 23px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 23px;
+  color: #000000;
+  margin: 18px 175px 24px 88px;
 }
 </style>

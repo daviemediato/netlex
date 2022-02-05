@@ -35,7 +35,7 @@
 </template>
 
 <script>
-// import Http from "../http-common";
+import Http from "../http-common";
 import router from "../router/index";
 
 export default {
@@ -48,19 +48,20 @@ export default {
   },
   methods: {
     login() {
-      // go to home page using router
-      router.push({ path: "/menu" });
+      const url = "/users/login";
+      const body = {
+        email: this.username,
+        password: this.password,
+      };
 
-      // Http.post("/users/login", {
-      //   username: this.username,
-      //   password: this.password,
-      // })
-      //   .then(() => {
-      //     console.log("batata");
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
+      Http.post(url, body)
+        .then((response) => {
+          localStorage.setItem("token", response.data.token);
+          router.push({ path: "/menu" });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };

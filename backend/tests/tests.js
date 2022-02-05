@@ -49,6 +49,6 @@ function topWords() {
     )
 }
 
-wordFrequency();
+// wordFrequency();
 wordSentences();
-topWords();
+// topWords();
