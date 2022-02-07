@@ -46,9 +46,11 @@ export default {
 
       Http.post(url, body)
         .then((response) => {
-          this.numberOccurrences = response.data;
-          this.wordResult = this.word;
-          this.isResultVisible = true;
+          if (response) {
+            this.numberOccurrences = response.data;
+            this.wordResult = this.word;
+            this.isResultVisible = true;
+          }
         })
         .catch(() => {
           throw new Error("Erro ao buscar a frequência da palavra.");

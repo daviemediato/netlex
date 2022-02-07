@@ -8,7 +8,7 @@ routes.post(`/documents/word-frequency`, checkLogin, async (req, res) => {
     const document = await Document.findOne();
     const result = DocumentHelper.wordFrequency(document, req.body.word);
 
-    if (!result) res.status(401).json({ error: 'No sentences found!' });
+    if (!result) res.send(0 + "");
 
     res.send(result + "");
 });

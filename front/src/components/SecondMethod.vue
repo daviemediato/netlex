@@ -28,17 +28,14 @@
       :key="item.id"
     >
       {{ index + 1 }}.
-      <v-main-text
-        v-for="subItem in item.split(' ')"
-        :key="subItem.id"
-        class="result-text"
-        ><v-main-text>
-          <v-main-text v-if="subItem.toLowerCase().includes(wordResult)"
-            ><b> {{ subItem }}</b></v-main-text
+      <span v-for="subItem in item.split(' ')" :key="subItem.id"
+        ><span>
+          <span v-if="subItem.toLowerCase().includes(wordResult)"
+            ><b> {{ subItem }}</b></span
           >
-          <v-main-text v-else> {{ subItem }}</v-main-text>
-        </v-main-text>
-      </v-main-text>
+          <span v-else> {{ subItem }}</span>
+        </span>
+      </span>
     </p>
   </div>
 </template>
@@ -66,13 +63,15 @@ export default {
 
       Http.post(url, body)
         .then((response) => {
-          this.phrasesOccurrences = response.data;
-          this.numberOccurrences = this.phrasesOccurrences.length;
-          this.wordResult = this.word;
-          this.isResultVisible = true;
+          if (response) {
+            this.phrasesOccurrences = response.data;
+            this.numberOccurrences = this.phrasesOccurrences.length;
+            this.wordResult = this.word;
+            this.isResultVisible = true;
+          }
         })
         .catch(() => {
-          throw new Error("Erro ao buscar as frases");
+          throw new Error("Erro ao buscar as frases.");
         });
     },
   },

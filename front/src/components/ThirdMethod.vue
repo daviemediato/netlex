@@ -28,6 +28,9 @@
     >
       {{ wordName }} - <b>{{ wordFrequency }}</b> ocorrências no texto.
     </p>
+    <p class="result-method-3" v-if="isNoResult">
+      Não há resultados para esta busca.
+    </p>
   </div>
 </template>
 
@@ -42,6 +45,7 @@ export default {
       minWordLenSelected: 3,
       items: [...Array(12).keys()].map((x) => x + 1),
       wordsDict: {},
+      isNoResult: false,
     };
   },
   methods: {
@@ -54,10 +58,18 @@ export default {
 
       Http.post(url, body)
         .then((response) => {
-          this.wordsDict = response.data;
+          if (response) {
+            this.wordsDict = response.data;
+            delete this.wordsDict[undefined];
+            if (Object.keys(this.wordsDict).length === 0) {
+              this.isNoResult = true;
+            } else {
+              this.isNoResult = false;
+            }
+          }
         })
         .catch(() => {
-          throw new Error("Erro ao buscar as frases");
+          throw new Error("Erro ao buscar as frases.");
         });
     },
   },

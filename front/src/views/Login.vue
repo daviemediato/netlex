@@ -12,7 +12,7 @@
         <v-text-field
           v-model="username"
           name="username"
-          type="text"
+          type="email"
           placeholder="Digite seu e-mail"
           outlined
           required
@@ -31,19 +31,25 @@
         <v-btn id="login-button" type="submit" value="log in">Entrar</v-btn>
       </form>
     </v-card>
+    <Toast id="toast" :message="message" />
   </div>
 </template>
 
 <script>
 import Http from "../http-common";
 import router from "../router/index";
+import Toast from "../components/Toast";
 
 export default {
   name: "Login",
+  components: {
+    Toast,
+  },
   data() {
     return {
       username: "",
       password: "",
+      message: "Falha Login",
     };
   },
   methods: {
@@ -56,18 +62,24 @@ export default {
 
       Http.post(url, body)
         .then((response) => {
-          localStorage.setItem("token", response.data.token);
-          router.push({ path: "/menu" });
+          if (response) {
+            localStorage.setItem("token", response.data.token);
+            this.isToastVisibile = false;
+            router.push({ path: "/menu" }).then(() => {
+              window.location.reload();
+            });
+          }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
+          const toastElement = document.getElementById("toast");
+          toastElement.style.display = "flex";
         });
     },
   },
 };
 </script>
 
-<style scoped>
+<style>
 #login-background {
   top: 0;
   left: 0;
@@ -111,7 +123,17 @@ export default {
   color: #ffffff;
 }
 
+#toast {
+  display: none;
+}
+
 .login-span {
   margin: 10px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 23px;
+  color: #011c28;
 }
 </style>

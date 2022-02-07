@@ -11,6 +11,8 @@ export default {
 </script>
 
 <style>
+/* Estilos gerais de elementos */
+
 html {
   height: 100%;
   overflow: hidden;
@@ -63,14 +65,7 @@ hr {
   border: 1px solid #011c28;
 }
 
-span {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 23px;
-  color: #011c28;
-}
+/* Estilos sobrepondo classes já existentes do vue */
 
 ::-webkit-scrollbar {
   display: none;

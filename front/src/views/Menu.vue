@@ -37,13 +37,7 @@ export default {
     ThirdMethod,
   },
   data() {
-    return {
-      items: [
-        ["mdi-email", "Inbox"],
-        ["mdi-account-supervisor-circle", "Supervisors"],
-        ["mdi-clock-start", "Clock-in"],
-      ],
-    };
+    return {};
   },
   methods: {},
 };
@@ -54,6 +48,8 @@ export default {
   width: 100%;
   height: 100%;
 }
+
+/* Estilos sobrepondo classes já existentes do vue */
 
 .v-tab {
   top: 50px;

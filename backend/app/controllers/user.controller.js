@@ -9,7 +9,7 @@ routes.post(`/users/login`, async (req, res) => {
     where: { email: req.body.email, password: req.body.password },
   });
 
-  if (!user) throw new Error(exception, "User not found");
+  if (!user) res.status(401).send({ error: 'No users found!' });
 
   const token = jwt.sign(
     {

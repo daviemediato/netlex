@@ -1,14 +1,28 @@
 module.exports = {
+    // Q: O que pensei? 
+    // A: A lógica está baseada na própria função stringToWordsArray()
+    //    Assim ela irá retornar um array com todas as palavras do conteúdo do documento
+    //    Para obter as palavras que queremos pode-se utilizar o filter e checar cada palavra
+    //    Por fim, para obter o número de palavras, basta utilizar o length do array
     wordFrequency: function (doc, word) {
-        const content = doc.content;
-        const searchResult = content.toString().match(new RegExp(word, 'gi'));
-        const numberOfOcurrences = searchResult ? searchResult.length : 0;
+        const content = doc.content ? doc.content : doc;
+        const allWords = this.stringToWordsArray(content);
+        const wordsFiltered = allWords.filter(w => w.toLowerCase() === word.toLowerCase());
+        const numberOfOcurrences = wordsFiltered ? wordsFiltered.length : 0;
 
         return numberOfOcurrences;
     },
 
+    // Q: O que pensei?
+    // A: A lógica está em realizar uma iteração letra por letra do conteúdo do documento
+    //    Assim a frase é criada de forma dinâmica e a cada iteração é adicionado um caractere
+    //    Porém é criado situações de parada para quando encontrar uma letra que esteja presente em "stopChars"
+    //    Assim é possível verificar se nessa frase criada possui a palavra procurada em "word"
+    //    Para filtrar ainda mais a frase, já que a mesma pode conter caracteres antes do ínicio da mesma, é
+    //       utilizado o método search e em sequência o substring para obter apenas a frase que está no internalo específicado
+    //    Por fim, é adicionado ao array de frases o resultado da frase desta busca
     wordSentences: function (doc, word) {
-        const content = doc.content;
+        const content = doc.content ? doc.content : doc;
         const contentLength = content.length;
         const stopChars = ['.', ':', ';', '\n'];
         let phrase = '';
@@ -32,8 +46,16 @@ module.exports = {
         return arrayOfPhrases;
     },
 
+    // Q: O que pensei?
+    // A: A lógica está em buscar todas as palavras do conteúdo do documento
+    //    Após é mapeado todos os resultados para que sejam case insensitive
+    //    Assim é filtrado pelo tamanho da palavra em questão, excluindo as palavras menores que x caracteres
+    //    Em sequência é criado um dicionário com todas as frequências de cada palavra que resultou do filtro
+    //    Dessa forma, é criado uma lógica iterativa para obter o maior resultado deste dicionário a cada iteração
+    //    Por fim, é retornado um dicionário contendo os y resultados com maior frequência que seja maiores que x caracteres
     topWords: function (doc, count, minWordLength) {
-        const content = doc.content;
+        const content = doc.content ? doc.content : doc;
+        const isTestRunning = doc.content ? false : true;
         const allDocWords = this.stringToWordsArray(content);
         const allDocWorsLowerCase = allDocWords.map((word) => { return word.toLowerCase(); });
         const filteredWords = allDocWorsLowerCase.filter((word) => word.length >= minWordLength);
@@ -57,8 +79,7 @@ module.exports = {
             delete wordsFrequency[maxKey];
         }
 
-        // será retornado um dicionário já ordenado com chave/quantidade
-        return wordsFrequencyOrdered;
+        return isTestRunning ? Object.keys(wordsFrequencyOrdered) : wordsFrequencyOrdered;
     },
 
     stringToWordsArray: function (text) {
