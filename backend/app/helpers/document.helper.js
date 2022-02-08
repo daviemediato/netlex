@@ -32,7 +32,9 @@ module.exports = {
             phrase += content[i];
 
             if (stopChars.includes(content[i])) {
-                if (phrase.toLowerCase().includes(word.toLowerCase())) {
+                const isIncluded = phrase.toLowerCase().includes(word.toLowerCase());
+
+                if (isIncluded) {
                     const indexOfFirstCapitalLetter = phrase.search(/[A-Z]/);
                     const finalPhraseResult = phrase.substring(indexOfFirstCapitalLetter,);
 
@@ -79,6 +81,7 @@ module.exports = {
             delete wordsFrequency[maxKey];
         }
 
+        delete wordsFrequencyOrdered[undefined];
         return isTestRunning ? Object.keys(wordsFrequencyOrdered) : wordsFrequencyOrdered;
     },
 

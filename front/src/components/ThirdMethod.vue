@@ -60,12 +60,8 @@ export default {
         .then((response) => {
           if (response) {
             this.wordsDict = response.data;
-            delete this.wordsDict[undefined];
-            if (Object.keys(this.wordsDict).length === 0) {
-              this.isNoResult = true;
-            } else {
-              this.isNoResult = false;
-            }
+            this.isNoResult =
+              Object.keys(this.wordsDict).length === 0 ? true : false;
           }
         })
         .catch(() => {

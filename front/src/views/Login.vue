@@ -49,7 +49,7 @@ export default {
     return {
       username: "",
       password: "",
-      message: "Falha Login",
+      message: "",
     };
   },
   methods: {
@@ -70,8 +70,11 @@ export default {
             });
           }
         })
-        .catch(() => {
+        .catch((error) => {
+          const message = error.response.data.message;
           const toastElement = document.getElementById("toast");
+
+          this.message = message;
           toastElement.style.display = "flex";
         });
     },

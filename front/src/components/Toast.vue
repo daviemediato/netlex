@@ -21,6 +21,11 @@ export default {
       info: this.message,
     };
   },
+  watch: {
+    message(newMessage) {
+      this.info = newMessage;
+    },
+  },
   methods: {
     closeIcon() {
       const toastElement = document.getElementById("toast");
